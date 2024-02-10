@@ -1,0 +1,24 @@
+  <mat-card class="example-card" #ProfileData>
+      <div mat-card-avatar class="example-header-image"></div>
+      <h2 class="profile">Profile</h2>
+      <div class="content">
+        <div><img mat-card-image [src]="Imageurl" width="350px" (click)="fileInput.click()" #Image></div>
+        <div class="info">
+          <p>I am {{ name }}{{lname}} and I am {{age}} year old and You can send me emails to <span>{{email}}</span>.I Live in the state of {{state}}. I like to play {{tag}} And Please send me newsletters . Please reach out me on my contact Number {{phone}}.</p>
+        <button mat-raised-button class="agree" routerLink="/home">I Agree</button>
+      </div>
+      </div>
+    <mat-card-actions style='margin: 5px;'>
+      <input #fileInput type="file" (change)="onEditPhoto($event, email)" style="display: none;">
+      <!-- <button mat-raised-button color="warn" type='file'accept=".png, .jpg, .jpeg"  (change)="onEditPhoto($event)">Edit Photo</button> -->
+      <button type="submit" mat-raised-button
+      (click)="fileInput.click()" color="warn">Edit Photo</button>
+      <button mat-raised-button color="warn" (click)="onEditProfile(ProfileData)">Edit Profile</button>
+    </mat-card-actions>
+  </mat-card>
+  
+ 
+
+  
+  
+  
