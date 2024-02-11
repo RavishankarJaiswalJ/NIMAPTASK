@@ -101,7 +101,14 @@ export class RestApiService{
   // url
 
   setProfilePic(data: any): Observable<any[]> {
-    return this.http.put<any[]>(`${this.apiUrl}/profiles`, data);
+    const { base64Img, id } = data;
+    return this.http.patch<any[]>(`${this.apiUrl}/profiles/${id}`, {profileImg:base64Img});
+  }
+  
+
+  editProfile(data: any): Observable<any[]> {
+    const { allData, id } = data;
+    return this.http.put<any[]>(`${this.apiUrl}/profiles/${id}`, allData);
   }
   
   // LAST WORKED CODE

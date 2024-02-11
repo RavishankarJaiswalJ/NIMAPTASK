@@ -241,6 +241,7 @@ export class RegisterComponent implements OnInit {
   
 
   setpopupdata(code: any) {
+    debugger;
     this.ProfileService.getProfileById(code).subscribe((res) => {
       this.editData = res;
       this.RegisterForm.setValue({

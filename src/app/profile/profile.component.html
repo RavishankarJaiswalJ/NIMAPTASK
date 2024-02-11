@@ -9,11 +9,11 @@
       </div>
       </div>
     <mat-card-actions style='margin: 5px;'>
-      <input #fileInput type="file" (change)="onEditPhoto($event, email)" style="display: none;">
+      <input #fileInput type="file" (change)="onEditPhoto($event, id)" style="display: none;">
       <!-- <button mat-raised-button color="warn" type='file'accept=".png, .jpg, .jpeg"  (change)="onEditPhoto($event)">Edit Photo</button> -->
       <button type="submit" mat-raised-button
       (click)="fileInput.click()" color="warn">Edit Photo</button>
-      <button mat-raised-button color="warn" (click)="onEditProfile(ProfileData)">Edit Profile</button>
+      <button mat-raised-button color="warn" (click)="onEditProfile(id)">Edit Profile</button>
     </mat-card-actions>
   </mat-card>
   

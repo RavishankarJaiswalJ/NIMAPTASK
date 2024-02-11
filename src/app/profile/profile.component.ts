@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from '../register/register.component';
 import { Register } from '../shared/register';
 import { HomeComponent } from '../home/home.component';
+import { JsonPipe } from '@angular/common';
 
 
 
@@ -16,7 +17,8 @@ import { HomeComponent } from '../home/home.component';
 })
 export class ProfileComponent implements OnInit, AfterViewInit{
   @ViewChildren(HomeComponent) addView: HomeComponent;
-  @ViewChildren(RegisterComponent) Forms: RegisterComponent;
+  @ViewChildren("Register") Forms: RegisterComponent;
+
   EditDatas:any;
   LastProfile:any;
   profilePic:any;
@@ -30,7 +32,7 @@ export class ProfileComponent implements OnInit, AfterViewInit{
   tag:string;
   age:number;
   fileInput: any;
-  id:number;
+  id:any;
   register: Register;
   editData:any
   editPhoto:any
@@ -85,8 +87,8 @@ export class ProfileComponent implements OnInit, AfterViewInit{
       this.state = data.lastProfile.state;
       this.tag = data.lastProfile.tag;
       this.phone = data.lastProfile.contact;
-      let Id = data.lastProfile.id;
-      console.log("Id",Id)
+      this.id = data.lastProfile.id;
+      console.log("__Id",this.id)
       // console.log(dataImg)
       this.Imageurl=dataImg;
       
@@ -131,77 +133,72 @@ export class ProfileComponent implements OnInit, AfterViewInit{
     this.service.getData().subscribe(data => { this.allData = data; });
   }
 
-  onEditPhoto(event:any, email:any){
+  onEditPhoto(event: any, id: any) {
     let reader = new FileReader();
     let file = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
-          reader.readAsDataURL(file);
-          debugger;
-          reader.onload = (e:any) => {
-            // let base64Img_email = {
-            //   base64Img: e.target.result,
-            //   email
-            // }
-            this.service.setProfilePic(this.allData).subscribe(response =>{
-              debugger;
-              console.info(response);
-              console.log('Image has been updated!');
-              // const data = this.LastProfile = response;
-              // console.log('Last Profile:',data);
-              // let dataImg = data.lastProfile.profileImg;
-              // this.Imageurl=dataImg;
-            })
-                  // this.Imageurl = reader.result; //change preview
-                  // Actual file upload api call. 
-                  // this.editPhoto=this.Forms.uploadFile(e)
-                  
-                  // this.service.RemoveProfile(e)     
-          }
+      reader.readAsDataURL(file);
+      debugger;
+      reader.onload = (e: any) => {
+        let base64Img_id = {
+          base64Img: e.target.result,
+          id
         }
-       }
-
-  // onEditPhoto(event:any){
-  //   let reader = new FileReader();
-  //   let file = event.target.files[0];
-  //   if (file) {
-  //         reader.readAsDataURL(file);
-  //         reader.onload = (e:any) => {
-  //                 this.Imageurl = reader.result;
-  //                 const updateProfile:Register ={
-  //                   ...this.register
-  //                   image =
-  //                 }
-                   
-  //         }
-  //       }
-  //      }
-
-  // openDialog(id:any){
-  //   const dialogRef = this.dialog.open(RegisterComponent, {
-  //     width: '50%',
-  //     enterAnimationDuration: '1000ms',
-  //     exitAnimationDuration: '1000ms',
-      
-  //   })
-  //   this.service.getProfile().subscribe(res=>{
-  //     const data = res;
-  //     console.log(data)
-      
-  //   })
-  // }
-  
+        this.service.setProfilePic(base64Img_id).subscribe(response => {
+          debugger;
+          console.info(response);
+          console.log('Image has been updated!');
+        })
+      }
+    }
+  }
 
   onEditProfile(id:any){
-    // this.addView.openDialog()
-  
-
+    debugger;
+    this.openDialog()
+    this.getData();
+    this.setpopupdata(this.allData, id);
   }
-  // loadProfile(){
-  //   this.service.GetAllProfile().subscribe(response=>{
-  //     this.profileData=response;
 
-  //   })
-  // }
+  onEditProfileSubmit(dataWithID:any){
+    this.service.editProfile(dataWithID).subscribe(res => {
+      console.info('res', JSON.stringify(res, null, 2));
+      console.log(`Profile has been updated!`)
+    });
+  }
+
+  setpopupdata(allData:Register[], id:any) {
+    const acutalData:any  = allData.filter(itm => itm.id === id);
+      this.Forms.RegisterForm.setValue({
+        id: acutalData.id,
+        profileImg: acutalData.profileImg,
+        firstname: acutalData.firstname,
+        lastname: acutalData.lastname,
+        email: acutalData.email,
+        contact: acutalData.contact,
+        age: acutalData.age,
+        state: acutalData.state,
+        country: acutalData.country,
+        address: acutalData.address,
+        tag: acutalData.tag,
+        subscribe: acutalData.subscribe,
+      });
+  }
+
+  openDialog(){
+    const dialogRef = this.dialog.open(RegisterComponent, {
+      width: '50%',
+      enterAnimationDuration: '1000ms',
+      exitAnimationDuration: '1000ms',
+      
+    })
+    this.service.getProfile().subscribe(res=>{
+      const data = res;
+      console.log(data)
+      
+    })
+  }
+  
 
 
 }
